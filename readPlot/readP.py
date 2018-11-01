@@ -5,7 +5,8 @@ import pandas as pd
 from hm import *
 
 #path = '../qcd_with_jumps/'
-path = '../'
+#path = '../'
+path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/'
 #pklN = 'result_with_pt_mass_energy.pickle'
 pklN = 'result_v0.pickle'
 
