@@ -7,11 +7,11 @@ from hm import *
 #path = '../qcd_with_jumps/'
 #path = '../'
 path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/'
-#pklN = 'result_with_pt_mass_energy.pickle'
-pklN = 'result_v0.pickle'
+pklN = 'result_with_pt_mass_energy_v2.pickle'
+#pklN = 'result_v2.pickle'
 
-#attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','npr','cMulti','nMulti']
-attrL=['cHadE','nHadE']
+attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','npr','cMulti','nMulti']
+#attrL=['cHadE','nHadE']
 
 
 f1 = open(path + pklN,'read')
