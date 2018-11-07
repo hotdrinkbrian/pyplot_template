@@ -4,14 +4,24 @@ import numpy as np
 import pandas as pd
 from hm import *
 
+attrKin = 0#1
+testOn  = 1
+version = '4.5'
 #path = '../qcd_with_jumps/'
 #path = '../'
-path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/'
-pklN = 'result_with_pt_mass_energy_v2.pickle'
-#pklN = 'result_v2.pickle'
+#path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/'
+#path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/'
+path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/temp/'
 
-attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','npr','cMulti','nMulti']
-#attrL=['cHadE','nHadE']
+if attrKin == 1:
+    pklN = 'result_with_pt_mass_energy_v' + version + '.pickle'
+else:
+    pklN = 'result_v' + version + '.pickle'
+
+if testOn == 0:
+    attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','npr','cMulti','nMulti']
+else:
+    attrL=['cHadE','nHadE']
 
 
 f1 = open(path + pklN,'read')
