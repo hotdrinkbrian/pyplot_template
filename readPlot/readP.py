@@ -4,9 +4,14 @@ import numpy as np
 import pandas as pd
 from hm import *
 
-attrKin = 0#1
-testOn  = 1
-version = '4.5'
+selected = 1#1
+attrKin  = 0#1
+testOn   = 0#1
+version  = '5'
+if selected == 1:
+    versionStr = version+'_withSelection'
+else:
+    versionStr = version+'_noSelection'
 #path = '../qcd_with_jumps/'
 #path = '../'
 #path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/'
@@ -14,14 +19,15 @@ version = '4.5'
 path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/temp/'
 
 if attrKin == 1:
-    pklN = 'result_with_pt_mass_energy_v' + version + '.pickle'
+    pklN = 'result_with_pt_mass_energy_v' + versionStr + '.pickle'
 else:
-    pklN = 'result_v' + version + '.pickle'
+    pklN = 'result_v' + versionStr + '.pickle'
 
 if testOn == 0:
-    attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','npr','cMulti','nMulti']
+    attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','npr','cMulti','nMulti']#,'FracCal']
 else:
     attrL=['cHadE','nHadE']
+    attrL=['cHadE']
 
 
 f1 = open(path + pklN,'read')
