@@ -4,10 +4,10 @@ import numpy as np
 import pandas as pd
 from hm import *
 
-selected = 1#1
-attrKin  = 0#1
+selected = 1
+attrKin  = 0
 testOn   = 0#1
-version  = '0'
+version  = '3'
 if selected == 1:
     versionStr = version+'_withSelection'
 else:
@@ -15,15 +15,21 @@ else:
 
 #path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/'
 #path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/'
+
 path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/temp/'
+path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/temp/v3_backMult100_select/'
 
 if attrKin == 1:
     pklN = 'result_with_pt_mass_energy_v' + versionStr + '.pickle'
 else:
     pklN = 'result_v' + versionStr + '.pickle'
 
+#pklN = 'result_v3_withSelection_kinOff_withoutHT50.pickle'
+pklN = 'result_with_pt_mass_energy_v3_withSelection_withHT50.pickle'
+
 if testOn == 0:
-    attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','nHadMulti','npr','cMulti','nMulti']#,'FracCal']
+    attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','npr','cMulti','nMulti']
+    #attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','nHadMulti','npr','cMulti','nMulti']#,'FracCal']
 else:
     attrL=['cHadE','nHadE']
     #attrL=['cHadE']
