@@ -7,13 +7,12 @@ from hm import *
 selected = 1#1
 attrKin  = 0#1
 testOn   = 0#1
-version  = '5'
+version  = '0'
 if selected == 1:
     versionStr = version+'_withSelection'
 else:
     versionStr = version+'_noSelection'
-#path = '../qcd_with_jumps/'
-#path = '../'
+
 #path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/'
 #path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/'
 path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/temp/'
@@ -24,10 +23,10 @@ else:
     pklN = 'result_v' + versionStr + '.pickle'
 
 if testOn == 0:
-    attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','npr','cMulti','nMulti']#,'FracCal']
+    attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','nHadMulti','npr','cMulti','nMulti','FracCal']
 else:
     attrL=['cHadE','nHadE']
-    attrL=['cHadE']
+    #attrL=['cHadE']
 
 
 f1 = open(path + pklN,'read')
