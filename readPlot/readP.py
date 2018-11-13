@@ -17,7 +17,7 @@ else:
 #path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/'
 
 path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/temp/'
-path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/temp/v3_backMult100_select/'
+#path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/temp/v3_backMult100_select/'
 
 if attrKin == 1:
     pklN = 'result_with_pt_mass_energy_v' + versionStr + '.pickle'
@@ -25,10 +25,16 @@ else:
     pklN = 'result_v' + versionStr + '.pickle'
 
 #pklN = 'result_v3_withSelection_kinOff_withoutHT50.pickle'
-pklN = 'result_with_pt_mass_energy_v3_withSelection_withHT50.pickle'
+#pklN = 'result_with_pt_mass_energy_v4_withSelection.pickle'
+#pklN = 'result_v3_withSelection_withoutHT50_TriggerBool.pickle'
+#pklN = 'result_with_pt_mass_energy_v3_withSelection_withoutHT50_TriggerBool.pickle'
+pklN = 'result_v8_withSelection.pickle'
+
 
 if testOn == 0:
-    attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','npr','cMulti','nMulti']
+    attrL = 
+    #attrL = ['cHadEFrac','nHadEFrac','nEmEFrac','cEmEFrac','cmuEFrac','muEFrac','eleEFrac','eleMulti','photonEFrac','photonMulti','cHadMulti','npr','cMulti','nMulti','nCHSJets','DisplacedJetsTriggerBool']
+    #attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','npr','cMulti','nMulti']
     #attrL = ['cHadE','nHadE','cHadEFrac','nHadEFrac','nEmE','nEmEFrac','cEmE','cEmEFrac','cmuE','cmuEFrac','muE','muEFrac','eleE','eleEFrac','eleMulti','photonE','photonEFrac','photonMulti','cHadMulti','nHadMulti','npr','cMulti','nMulti']#,'FracCal']
 else:
     attrL=['cHadE','nHadE']
