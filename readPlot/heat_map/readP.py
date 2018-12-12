@@ -4,14 +4,7 @@ import numpy as np
 import pandas as pd
 from hm import *
 
-attrKin  = 0
-testOn   = 0#1
-version  = '3'
-
 path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/rs/'
-
-
-
 
 
 def read_pkl(pth):
@@ -23,6 +16,11 @@ def find_nearest(array, value):
     idx = (np.abs(array - value)).argmin()
     return array[idx], idx
 
+trn_m = 60#20#30#60#50#40
+trn_l = 5000#500
+
+#val = 'err'
+val = 'val'
 
 mass_list    = [20,30,40,50,60]
 ctau_list    = [500,1000,2000,5000]
@@ -49,9 +47,9 @@ if 1:
 	out_dict[ci] = {}
 	for key, item in combi_dict.iteritems():
 	    out_dict[ci][item] = {}
-	    for m_trn in [40]:
+	    for m_trn in [trn_m]:
 		out_dict[ci][item][m_trn]            = {}
-		for l_trn in [500]: 
+		for l_trn in [trn_l]: 
 		    out_dict[ci][item][m_trn][l_trn] = {}
 		    for m_tst in mass_list:
 			out_dict[ci][item][m_trn][l_trn][m_tst] = {} 
@@ -167,14 +165,12 @@ for i in mass_list:
 LL = []
 for mmi in mass_list:
     for lli in ctau_list:  
-        imDict[mmi][lli]   = out_dict['hard_cut']['full_kin0'][40][500][mmi][lli]['(1/FPR_BDT)/(1/FPR_C)|cut_TPR'] 
-        err_dict[mmi][lli] = out_dict['hard_cut']['full_kin0'][40][500][mmi][lli]['(1/FPR_BDT)/(1/FPR_C)|cut_TPR--err']
+        imDict[mmi][lli]   = out_dict['hard_cut']['full_kin0'][trn_m][trn_l][mmi][lli]['(1/FPR_BDT)/(1/FPR_C)|cut_TPR'] 
+        err_dict[mmi][lli] = out_dict['hard_cut']['full_kin0'][trn_m][trn_l][mmi][lli]['(1/FPR_BDT)/(1/FPR_C)|cut_TPR--err']
 
 
 df_val = pd.DataFrame(imDict)
 df_err = pd.DataFrame(err_dict)
-
-val = 'err'
 
 if val == 'val':
     df        = df_val
