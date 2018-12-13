@@ -4,7 +4,132 @@ import numpy as np
 import pandas as pd
 from hm import *
 
-path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/rs/'
+#path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/rs/'
+path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/find2b/'
+
+
+attr_list = ['J1cHadEFrac','J1nHadEFrac','J1nEmEFrac','J1cEmEFrac','J1cmuEFrac','J1muEFrac','J1eleEFrac','J1eleMulti','J1photonEFrac','J1photonMulti','J1cHadMulti','J1nHadMulti','J1npr','J1cMulti','J1nMulti','J1nSelectedTracks','J1ecalE']
+
+def combi_2ofN(lst):
+    kL = []
+    for a1 in lst:
+        for a2 in lst:
+            if not ([a1,a2] in kL) | ([a2,a1] in kL):    kL.append([a1,a2])
+    return kL
+
+def read_pkl(pth):
+    pkls = joblib.load(pth)
+    return pkls['data']
+
+def find_nearest(array, value):
+    array = np.asarray(array)
+    idx = (np.abs(array - value)).argmin()
+    return array[idx], idx
+
+
+attr_2combi_list = combi_2ofN(attr_list)
+a_c_list         = []
+for i in attr_2combi_list:
+    a_c_list.append('_'.join(i))
+print a_c_list    
+
+counting = 0
+out_dict  = {}
+#print attr_2combi_list
+for a1 in attr_list:
+    a1_s = a1[2:]
+    out_dict[a1_s] = {}
+    for a2 in attr_list:
+        a2_s = a2[2:] 
+        a_c1 = a1+'_'+a2
+        a_c2 = a2+'_'+a1
+        if   a_c1 in a_c_list:    a_c = a_c1
+        elif a_c2 in a_c_list:    a_c = a_c2
+        file_name = 'RS_trn_60GeV_5000mm_tst_60GeV_5000mm_slct1_attr_'+a_c+'_kin0_v0.pkl'
+        counting += 1 
+        print counting
+        print file_name
+        in_dict   = read_pkl(path+file_name)
+        
+        roc_dict = in_dict['roc']
+        fpr_bdt  = roc_dict['fpr']
+        tpr_bdt  = roc_dict['tpr']
+        #e_tpr_l  = roc_dict['e_tpr_l']
+        e_fpr_l  = roc_dict['e_fpr_l']
+        #e_tpr_h  = roc_dict['e_tpr_h']
+        e_fpr_h  = roc_dict['e_fpr_h']
+        
+        cut_dict = in_dict['cut_based']
+        dicti    = cut_dict['hard_cut']
+        sgn_eff  = dicti['tpr']
+        fls_eff  = dicti['fpr']
+        #tpr_e_l  = dicti['tpr_e_l']
+        fpr_e_l  = dicti['fpr_e_l']
+        #tpr_e_h  = dicti['tpr_e_h']
+        fpr_e_h  = dicti['fpr_e_h']
+
+        tmp_tpr, indx = find_nearest(tpr_bdt, sgn_eff)
+        tmp_fpr       = fpr_bdt[indx]
+        
+        count     = 1   
+        if_done   = False
+        while not if_done:
+            if   tmp_tpr > sgn_eff:
+                idx_h     = indx
+                idx_l     = indx+count
+                tmp_tpr_h = tmp_tpr
+                tmp_tpr_l = tpr_bdt[idx_l]
+                if tmp_tpr_l < sgn_eff:    if_done = True     
+            elif tmp_tpr < sgn_eff:
+                idx_l     = indx
+                idx_h     = indx-count
+                tmp_tpr_l = tmp_tpr
+                tmp_tpr_h = tpr_bdt[idx_h]  
+                idx_l     = indx
+                if tmp_tpr_h > sgn_eff:    if_done = True 
+            elif tmp_tpr == sgn_eff:  
+                idx_h     = indx
+                idx_l     = indx
+                tmp_tpr_l = tmp_tpr
+                tmp_tpr_h = tmp_tpr       
+                if_done   = True    
+            #print 'tmp_tpr_l', tmp_tpr_l
+            #print 'tmp_tpr_h', tmp_tpr_h
+            count += 1     
+       
+        delta_fpr_l = np.abs( tmp_fpr-(fpr_bdt[idx_l]-e_fpr_l[idx_l]) )
+        delta_fpr_h = np.abs( (fpr_bdt[idx_h]+e_fpr_h[idx_h])-tmp_fpr )  
+        err_fpr     = np.max([delta_fpr_l,delta_fpr_h,e_fpr_h[indx],e_fpr_l[indx]])   
+        fpr_err     = np.maximum(fpr_e_l,fpr_e_h)
+        
+       
+        inv_fpr     = fls_eff/float(tmp_fpr)
+        inv_fpr_err = np.sqrt(np.square(fpr_err/fls_eff) + np.square(err_fpr/tmp_fpr))
+
+        #inv_fpr = 1./float(fpr)
+        out_dict[a1_s][a2_s] = {}
+        out_dict[a1_s][a2_s]['score'] = inv_fpr
+        out_dict[a1_s][a2_s]['err'  ] = inv_fpr_err
+
+
+print out_dict
+
+
+
+
+
+
+
+
+exit()
+
+
+
+
+
+
+
+"""
 
 
 def read_pkl(pth):
@@ -17,10 +142,10 @@ def find_nearest(array, value):
     return array[idx], idx
 
 trn_m = 20#30#60#30#60#20#30#60#50#40
-trn_l = 2000#1000#5000#2000#5000#500
+trn_l = 1000#5000#2000#5000#500
 
-#val = 'err'
-val = 'val'
+val = 'err'
+#val = 'val'
 
 mass_list    = [20,30,40,50,60]
 ctau_list    = [500,1000,2000,5000]
@@ -43,8 +168,6 @@ empty_log = []
 out_dict  = {}
 
 if 1:
-    for ci in cut_type:
-	out_dict[ci] = {}
 	for key, item in combi_dict.iteritems():
 	    out_dict[ci][item] = {}
 	    for m_trn in [trn_m]:
@@ -192,4 +315,4 @@ plt.show()
  
     
 
-
+"""
