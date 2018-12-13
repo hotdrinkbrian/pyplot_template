@@ -16,11 +16,11 @@ def find_nearest(array, value):
     idx = (np.abs(array - value)).argmin()
     return array[idx], idx
 
-trn_m = 20#30#60#30#60#20#30#60#50#40
-trn_l = 2000#1000#5000#2000#5000#500
+trn_m = 40
+trn_l = 5000
 
-#val = 'err'
 val = 'val'
+val = 'err'
 
 mass_list    = [20,30,40,50,60]
 ctau_list    = [500,1000,2000,5000]

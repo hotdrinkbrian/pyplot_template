@@ -5,8 +5,8 @@ import pandas as pd
 from hm import *
 
 #path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/rs/'
-path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/find2b/'
-
+#path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/find2b/'
+path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/60_5000_40_500/'
 
 attr_list = ['J1cHadEFrac','J1nHadEFrac','J1nEmEFrac','J1cEmEFrac','J1cmuEFrac','J1muEFrac','J1eleEFrac','J1eleMulti','J1photonEFrac','J1photonMulti','J1cHadMulti','J1nHadMulti','J1npr','J1cMulti','J1nMulti','J1nSelectedTracks','J1ecalE']
 
@@ -45,7 +45,8 @@ for a1 in attr_list:
         a_c2 = a2+'_'+a1
         if   a_c1 in a_c_list:    a_c = a_c1
         elif a_c2 in a_c_list:    a_c = a_c2
-        file_name = 'RS_trn_60GeV_5000mm_tst_60GeV_5000mm_slct1_attr_'+a_c+'_kin0_v0.pkl'
+        #file_name = 'RS_trn_60GeV_5000mm_tst_60GeV_5000mm_slct1_attr_'+a_c+'_kin0_v0.pkl'
+        file_name = 'RS_trn_60GeV_5000mm_tst_40GeV_500mm_slct1_attr_'+a_c+'_kin0_v0.pkl'
         counting += 1 
         print counting
         print file_name
@@ -112,8 +113,57 @@ for a1 in attr_list:
         out_dict[a1_s][a2_s]['err'  ] = inv_fpr_err
 
 
-print out_dict
+#print out_dict
 
+
+
+
+
+val = 'val'
+#val = 'err'
+
+imDict   = {}
+err_dict = {}
+for a1 in attr_list:
+    a1_s = a1[2:]
+    imDict[a1_s]   = {}
+    err_dict[a1_s] = {}
+    for a2 in attr_list:
+        a2_s = a2[2:]
+        imDict[a1_s][a2_s]   = 0.
+        err_dict[a1_s][a2_s] = 0.
+
+LL = []
+for a1 in attr_list:
+    a1_s = a1[2:]
+    for a2 in attr_list:
+        a2_s = a2[2:]
+        imDict[a1_s][a2_s]   = out_dict[a1_s][a2_s]['score']
+        err_dict[a1_s][a2_s] = out_dict[a1_s][a2_s]['err']
+
+df_val = pd.DataFrame(imDict)
+df_err = pd.DataFrame(err_dict)
+print df_val
+
+
+if val == 'val':
+    df        = df_val
+    val_label = '(1/FPR_BDT)/(1/FPR_cut) at cut TPR'
+elif val == 'err':
+    df        = df_err
+    val_label = '(1/FPR_BDT)/(1/FPR_cut) at cut TPR -- errors'
+
+
+attr_L = df.columns.values.tolist()
+#print attr_L
+#attr_L = range(0,17)
+
+
+fig, ax  = plt.subplots()
+im, cbar = heatmap(df, attr_L, attr_L, ax=ax, cmap="YlGn", cbarlabel=val_label)
+texts    = annotate_heatmap(im, valfmt="{x:.3f} t", fsize=6)
+fig.tight_layout()
+plt.show()
 
 
 
