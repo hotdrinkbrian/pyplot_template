@@ -186,7 +186,7 @@ c_L = [500,1000,2000,5000]
 
 fig, ax  = plt.subplots()
 im, cbar = heatmap(df, c_L, m_L, ax=ax, cmap="YlGn", cbarlabel=val_label)
-texts    = annotate_heatmap(im, valfmt="{x:.3f} t", fsize=6)
+texts    = annotate_heatmap(im, valfmt="{x:.3f}", fsize=6)
 fig.tight_layout()
 plt.show()
  
