@@ -4,8 +4,24 @@ import numpy as np
 import pandas as pd
 from hm import *
 
-path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/rs/'
+import matplotlib
+matplotlib.use('Agg') #prevent the plot from showing
+import argparse as agp
 
+pars = agp.ArgumentParser()
+pars.add_argument('--trnm',action='store',type=str,help='train mass')
+pars.add_argument('--trnl',action='store',type=str,help='train lifetime')
+pars.add_argument('--mode',action='store',type=str,help='mode: value or error')
+
+args  = pars.parse_args()
+trn_m = args.trnm
+trn_l = args.trnl
+mode  = args.mode
+
+
+#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/rs/'
+path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/'
+pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/par_space_map/'
 
 def read_pkl(pth):
     pkls = joblib.load(pth)
@@ -16,13 +32,17 @@ def find_nearest(array, value):
     idx = (np.abs(array - value)).argmin()
     return array[idx], idx
 
-trn_m = 40
-trn_l = 5000
+#trn_m = 40
+#trn_l = 5000
+trn_m = int(trn_m)
+trn_l = int(trn_l)
 
-val = 'val'
-val = 'err'
+val = mode
+#val = 'val'
+#val = 'err'
 
-mass_list    = [20,30,40,50,60]
+#mass_list    = [20,30,40,50,60]
+mass_list    = [20,30,40,50]
 ctau_list    = [500,1000,2000,5000]
 
 cut_type     = ['hard_cut']#['loose_cut','hard_cut']
@@ -188,8 +208,9 @@ fig, ax  = plt.subplots()
 im, cbar = heatmap(df, c_L, m_L, ax=ax, cmap="YlGn", cbarlabel=val_label)
 texts    = annotate_heatmap(im, valfmt="{x:.3f}", fsize=6)
 fig.tight_layout()
-plt.show()
+#plt.show()
  
-    
+outName  = 'param_space_map_bdt_vs_'+cut_type[0]+'_trn_'+str(trn_m)+'_'+str(trn_l)+'_'+val 
+fig.savefig(pth_out + outName + '.png', bbox_inches='tight')    
 
 
