@@ -4,14 +4,14 @@ from time import sleep as slp
 
 A = 'python '
 B = '/beegfs/desy/user/hezhiyua/git/pyplot_template/readPlot/heat_map/'
-C = 'readP.py'
+C = 'FPR_vs.py'
 
 #D = ' --trnm '  + '50'
 #E = ' --trnl '  + '2000'
 #F  = ' --mode '
 
-mass_list = [20,30,40,50]
-ctau_list = [500,1000,2000,5000]
+mass_list = ['50']#['30']#[20,30,40,50]
+ctau_list = ['500']#[500,1000,2000,5000]
 mode_list = ['val']#['val','err']
 
 for mm in mass_list:

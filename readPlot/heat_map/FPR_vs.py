@@ -18,14 +18,23 @@ trn_m = args.trnm
 trn_l = args.trnl
 mode  = args.mode
 
+tv_str = 'trn50_500val30_2000/'#'trn30_500val50_1000/'
+nn_pth  = '/beegfs/desy/user/hezhiyua/2bBacked/skimmed/LLP/all_in_1/nn_format/2jets/DPG/lola/Results/'+tv_str
 
-#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/rs/'
-#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/'
-#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/test/'
-path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG/'
-#pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/par_space_map/'
-#pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/par_space_map/test/' 
-pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG/'+'heat/'
+path_nn = nn_pth
+
+
+
+
+
+#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD_bug/test/'
+#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG/'
+path   = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_new/'
+#pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD_bug/auc_map/'
+#pth_out = path_nn
+pth_out = path + 'heat/'
+
+
 
 def read_pkl(pth):
     pkls = joblib.load(pth)
@@ -45,7 +54,6 @@ val = mode
 #val = 'val'
 #val = 'err'
 
-#mass_list    = [20,30,40,50,60]
 mass_list    = [20,30,40,50]
 ctau_list    = [500,1000,2000,5000]
 
@@ -85,6 +93,11 @@ if 1:
 			    print file_to_look
 			    path_tot     = path + file_to_look
 			    in_dict      = read_pkl(path_tot)
+
+                            file_to_look_nn = 'RS_'+'trn'+'_'+trn_part+tst_part+'mm_slct1_attr_'+'lola'+'_v0.pkl'
+                            path_tot_nn     = path_nn + file_to_look_nn
+                            in_dict_nn      = read_pkl(path_tot_nn) 
+
 			    if 1:#in_dict:             !!!!!!!
 				roc_dict = in_dict['roc']
 				fpr_bdt  = roc_dict['fpr']
@@ -93,7 +106,17 @@ if 1:
 				e_fpr_l  = roc_dict['e_fpr_l']
 				#e_tpr_h  = roc_dict['e_tpr_h']
 				e_fpr_h  = roc_dict['e_fpr_h']
-                 
+                
+                                roc_dict_nn = in_dict_nn['roc']
+                                fpr_nn      = roc_dict_nn['fpr']
+                                tpr_nn      = roc_dict_nn['tpr']
+                                #e_tpr_l_nn  = roc_dict_nn['e_tpr_l']
+                                e_fpr_l_nn  = roc_dict_nn['e_fpr_l']
+                                #e_tpr_h_nn  = roc_dict_nn['e_tpr_h']
+                                e_fpr_h_nn  = roc_dict_nn['e_fpr_h']
+
+      
+                                """
 				cut_dict = in_dict['cut_based']
 				dicti    = cut_dict[ci]
 				sgn_eff  = dicti['tpr']
@@ -102,13 +125,19 @@ if 1:
 				fpr_e_l  = dicti['fpr_e_l']
 				#tpr_e_h  = dicti['tpr_e_h']
 				fpr_e_h  = dicti['fpr_e_h']
-     
-                                
+                                """  
+
+                                ##################### test 
+                                #print sgn_eff
+                                sgn_eff  = 0.1#0.4#0.9#0.2#0.66#0.2#0.4#0.5#0.6  #0.9#0.8#0.7   #0.1#0.4     
+                                #####################          
 
 				if sgn_eff != 0:
 				    tmp_tpr, indx = find_nearest(tpr_bdt, sgn_eff)
 				    tmp_fpr       = fpr_bdt[indx]
 
+                                    tmp_tpr_nn, indx_nn = find_nearest(tpr_nn, sgn_eff)
+                                    tmp_fpr_nn          = fpr_nn[indx_nn]
       
                                     count     = 1   
                                     if_done   = False
@@ -140,16 +169,51 @@ if 1:
                                             print 'tmp_fpr', tmp_fpr
                                         count += 1     
 
+                                    #delta_fpr_l   = np.abs( tmp_fpr-(fpr_bdt[idx_l]-e_fpr_l[idx_l]) )
+                                    #delta_fpr_h   = np.abs( (fpr_bdt[idx_h]+e_fpr_h[idx_h])-tmp_fpr )  
+                                    #err_fpr       = np.max([delta_fpr_l,delta_fpr_h,e_fpr_h[indx],e_fpr_l[indx]])   
+                                    #fpr_err       = np.maximum(fpr_e_l,fpr_e_h)
+
+                                    """
+                                    count_nn     = 1
+                                    if_done_nn   = False
+                                    #print 'sgn_eff', sgn_eff
+                                    while not if_done_nn:
+                                        if   tmp_tpr_nn > sgn_eff:
+                                            idx_h_nn     = indx_nn
+                                            idx_l_nn     = indx_nn+count_nn
+                                            tmp_tpr_h_nn = tmp_tpr_nn
+                                            tmp_tpr_l_nn = tpr_nn[idx_l_nn]
+                                            if tmp_tpr_l_nn < sgn_eff:    if_done_nn = True
+                                        elif tmp_tpr_nn < sgn_eff:
+                                            idx_l_nn     = indx_nn
+                                            idx_h_nn     = indx_nn-count_nn
+                                            tmp_tpr_l_nn = tmp_tpr_nn
+                                            tmp_tpr_h_nn = tpr_nn[idx_h_nn]
+                                            idx_l_nn     = indx_nn
+                                            if tmp_tpr_h_nn > sgn_eff:    if_done_nn = True
+                                        elif tmp_tpr_nn == sgn_eff:
+                                            idx_h_nn     = indx_nn
+                                            idx_l_nn     = indx_nn
+                                            tmp_tpr_l_nn = tmp_tpr_nn
+                                            tmp_tpr_h_nn = tmp_tpr_nn
+                                            if_done_nn   = True
+                                        count_nn += 1
+
+                                     
                                     delta_fpr_l   = np.abs( tmp_fpr-(fpr_bdt[idx_l]-e_fpr_l[idx_l]) )
                                     delta_fpr_h   = np.abs( (fpr_bdt[idx_h]+e_fpr_h[idx_h])-tmp_fpr )  
                                     err_fpr       = np.max([delta_fpr_l,delta_fpr_h,e_fpr_h[indx],e_fpr_l[indx]])   
                                     fpr_err       = np.maximum(fpr_e_l,fpr_e_h)
-
+                                    """
                                     
 
 				    if tmp_fpr != 0:
-					inv_fpr     = fls_eff/float(tmp_fpr)
-                                        inv_fpr_err = np.sqrt(np.square(fpr_err/fls_eff) + np.square(err_fpr/tmp_fpr))
+                                        print 'TPR:' 
+                                        print 'BDT: ', tmp_tpr
+                                        print 'NN: ', tmp_tpr_nn  
+					inv_fpr     = tmp_fpr/float(tmp_fpr_nn)#fls_eff/float(tmp_fpr)
+                                        #inv_fpr_err = np.sqrt(np.square(fpr_err/fls_eff) + np.square(err_fpr/tmp_fpr))
 
 				    else           :
 					print '>>>>>>>>>>>>>>>>>>>> Zero devision!'
@@ -157,13 +221,13 @@ if 1:
 					inv_fpr_err = 0
 				else:    pass # !!!!!!!!!!!!!!!!!!!!!!!!!!!! hard coded cut TPR!!!!!
  
-				out_dict[ci][item][m_trn][l_trn][m_tst][l_tst]['(1/FPR_BDT)/(1/FPR_C)|cut_TPR']      = inv_fpr 
-				out_dict[ci][item][m_trn][l_trn][m_tst][l_tst]['(1/FPR_BDT)/(1/FPR_C)|cut_TPR--err'] = inv_fpr_err 
+				out_dict[ci][item][m_trn][l_trn][m_tst][l_tst]['FPR_ratio']      = inv_fpr 
+				#out_dict[ci][item][m_trn][l_trn][m_tst][l_tst]['FPR_ratio_err'] = inv_fpr_err 
 
 			    else:
 				print '>>>>>>>>>>>>>>>>>>>> no in_dict!!'
-				out_dict[ci][item][m_trn][l_trn][m_tst][l_tst]['(1/FPR_BDT)/(1/FPR_C)|cut_TPR']      = 0 
-				out_dict[ci][item][m_trn][l_trn][m_tst][l_tst]['(1/FPR_BDT)/(1/FPR_C)|cut_TPR--err'] = 0 
+				out_dict[ci][item][m_trn][l_trn][m_tst][l_tst]['FPR_ratio']      = 0 
+				#out_dict[ci][item][m_trn][l_trn][m_tst][l_tst]['FPR_ratio_err'] = 0 
 
 				empty_log.append(file_to_look)
 
@@ -202,19 +266,19 @@ input_string = '2best_kin1'
 LL = []
 for mmi in mass_list:
     for lli in ctau_list:  
-        imDict[mmi][lli]   = out_dict['hard_cut'][input_string][trn_m][trn_l][mmi][lli]['(1/FPR_BDT)/(1/FPR_C)|cut_TPR'] 
-        err_dict[mmi][lli] = out_dict['hard_cut'][input_string][trn_m][trn_l][mmi][lli]['(1/FPR_BDT)/(1/FPR_C)|cut_TPR--err']
+        imDict[mmi][lli]   = out_dict['hard_cut'][input_string][trn_m][trn_l][mmi][lli]['FPR_ratio'] 
+        #err_dict[mmi][lli] = out_dict['hard_cut'][input_string][trn_m][trn_l][mmi][lli]['(1/FPR_BDT)/(1/FPR_C)|cut_TPR--err']
 
 
 df_val = pd.DataFrame(imDict)
-df_err = pd.DataFrame(err_dict)
+#df_err = pd.DataFrame(err_dict)
 
 if val == 'val':
     df        = df_val
-    val_label = '(1/FPR_BDT)/(1/FPR_cut) at cut TPR'
-elif val == 'err':
-    df        = df_err
-    val_label = '(1/FPR_BDT)/(1/FPR_cut) at cut TPR -- errors'
+    val_label = '(1/FPR_NN)/(1/FPR_BDT) at cut TPR'
+#elif val == 'err':
+#    df        = df_err
+#    val_label = '(1/FPR_BDT)/(1/FPR_cut) at cut TPR -- errors'
 
 
 m_L = df.columns.values.tolist()
@@ -227,7 +291,7 @@ texts    = annotate_heatmap(im, valfmt="{x:.3f}", fsize=6)
 fig.tight_layout()
 #plt.show()
  
-outName  = 'param_space_map_bdt_vs_'+cut_type[0]+'_trn_'+str(trn_m)+'_'+str(trn_l)+'_'+val 
+outName  = 'param_space_map_bdt_vs_'+'NN'+'_trn_'+str(trn_m)+'_'+str(trn_l)+'_'+val 
 fig.savefig(pth_out + outName + '.png', bbox_inches='tight')    
 
 
