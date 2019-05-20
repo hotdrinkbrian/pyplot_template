@@ -11,12 +11,12 @@ val = 'val'
 #val = 'err'
 
 #path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG/'
-path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_new/'
+path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_new/'+'find2best/'
 
 
 #attr_list = ['J1cHadEFrac','J1nHadEFrac','J1nEmEFrac','J1cEmEFrac','J1cmuEFrac','J1muEFrac','J1eleEFrac','J1eleMulti','J1photonEFrac','J1photonMulti','J1cHadMulti','J1nHadMulti','J1npr','J1cMulti','J1nMulti','J1nSelectedTracks','J1ecalE']
 #attr_list = ['J1cHadEFrac','J1nHadEFrac','J1nEmEFrac','J1cEmEFrac','J1cHadMulti','J1nHadMulti','J1npr','J1cMulti','J1nMulti','J1ecalE']
-attr_list = ['cHadEFrac','nHadEFrac','nEmEFrac','cHadMulti','nHadMulti','npr','cMulti','ecalE','nSelectedTracks','photonEFrac']
+attr_list = ['cHadEFrac','nHadEFrac','nEmEFrac','cHadMulti','nHadMulti','npr','cMulti','ecalE','photonEFrac']#,'nSelectedTracks'] 
 
 not_there = ['cEmEFrac']
 
@@ -187,7 +187,7 @@ print df_val
 if val == 'val':
     df        = df_val
     if score == 'aoc': 
-        val_label = 'AOC'
+        val_label = 'AUC'#'AOC'
     elif score == 'fpr':
         val_label = '(1/FPR_BDT)/(1/FPR_cut) at cut TPR'
 elif val == 'err':
@@ -203,7 +203,7 @@ attr_L = df.columns.values.tolist()
 
 fig, ax  = plt.subplots()
 im, cbar = heatmap(df, attr_L, attr_L, ax=ax, cmap="YlGn", cbarlabel=val_label)
-texts    = annotate_heatmap(im, valfmt='{x:.3f}', fsize=6) # valfmt="{x:.3f} t"
+texts    = annotate_heatmap(im, valfmt='{x:.2f}', fsize=8) # valfmt="{x:.3f} t"
 fig.tight_layout()
 #plt.show()
 

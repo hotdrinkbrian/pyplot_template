@@ -27,18 +27,22 @@ def heatmap(data, row_labels, col_labels, ax=None,
         ax = plt.gca()
 
     # Plot the heatmap
-    im = ax.imshow(data, norm=matplotlib.colors.LogNorm(), **kwargs)
+    
+    # log norm:
+    #im = ax.imshow(data, norm=matplotlib.colors.LogNorm(), **kwargs)
+    im = ax.imshow(data, **kwargs)
 
     # Create colorbar
     cbar = ax.figure.colorbar(im, ax=ax, **cbar_kw)
-    cbar.ax.set_ylabel(cbarlabel, rotation=-90, va="bottom")
+    cbar.ax.set_ylabel(cbarlabel, rotation=-90, va="bottom", fontsize=9)#14)
 
     # We want to show all ticks...
     ax.set_xticks(np.arange(data.shape[1]))
     ax.set_yticks(np.arange(data.shape[0]))
     # ... and label them with the respective list entries.
-    ax.set_xticklabels(col_labels)
-    ax.set_yticklabels(row_labels)
+    tick_s = 10#14
+    ax.set_xticklabels(col_labels, fontsize=tick_s)
+    ax.set_yticklabels(row_labels, fontsize=tick_s)
 
     # Let the horizontal axes labeling appear on top.
     ax.tick_params(top=True, bottom=False,
@@ -107,7 +111,7 @@ def annotate_heatmap(im, data=None, valfmt="{x:.2f}",
     texts = []
     for i in range(data.shape[0]):
         for j in range(data.shape[1]):
-            #kw.update(color=textcolors[im.norm(data[i, j]) > threshold])
+            kw.update(color=textcolors[im.norm(data[i, j]) > threshold])
             text = im.axes.text(j, i, valfmt(data[i, j], None), fontsize=fsize, **kw)
             texts.append(text)
 

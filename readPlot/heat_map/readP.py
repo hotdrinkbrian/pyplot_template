@@ -6,26 +6,38 @@ from hm import *
 
 import matplotlib
 matplotlib.use('Agg') #prevent the plot from showing
-import argparse as agp
 
+from matplotlib import rc
+rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+rc('text', usetex=True)
+
+
+
+import argparse as agp
 pars = agp.ArgumentParser()
 pars.add_argument('--trnm',action='store',type=str,help='train mass')
 pars.add_argument('--trnl',action='store',type=str,help='train lifetime')
 pars.add_argument('--mode',action='store',type=str,help='mode: value or error')
-
 args  = pars.parse_args()
 trn_m = args.trnm
 trn_l = args.trnl
 mode  = args.mode
 
-
 #path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/rs/'
 #path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/'
 #path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/test/'
-path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG/'
+#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG/'
+#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_new/'
+#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_post/'
+#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/DPG_post/'
+path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/v6/'
+
 #pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/par_space_map/'
 #pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/par_space_map/test/' 
-pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG/'+'heat/'
+#pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG/'+'heat/'
+#pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_new/'+'heat/'
+pth_out = path + 'heat/'
+
 
 def read_pkl(pth):
     pkls = joblib.load(pth)
@@ -45,28 +57,50 @@ val = mode
 #val = 'val'
 #val = 'err'
 
-#mass_list    = [20,30,40,50,60]
 mass_list    = [20,30,40,50]
 ctau_list    = [500,1000,2000,5000]
 
-cut_type     = ['hard_cut']#['loose_cut']#['hard_cut']#['loose_cut','hard_cut']
-inputs       = ['2best']#['full']#['2best']#['full']#['2best','full']
-kin_var      = ['kin1']#['kin0']#['kin0','kin1']
+cut_type     = ['hard_cut']#['loose_cut']#['loose_cut','hard_cut']
+inputs       = ['2best']#['full']#['2best','full']
+kin_var      = ['kin1']#['kin0','kin1']
+
+#jet_lst      = ['jet0']
+#jet_lst      = ['jet1']
+jet_lst      = ['jet01']
+#ExcLimit     = ['ExLim1']
+ExcLimit     = ['ExLim0']
+
+input_string = '_'.join([inputs[0],kin_var[0],jet_lst[0],ExcLimit[0]])
+#input_string = '2best_kin1'
+#input_string = '2best_kin0'
+#input_string = 'full_kin0'
+#input_string = 'full_kin1'
+
+#inputs       = ['full']
+#kin_var      = ['kin0']
+#input_string = 'full_kin0'
+
 
 combi_dict   = {}
 cc           = 0
 for i in inputs:
     for j in kin_var:
-        tmp_list = []
-        tmp_list.append(i)
-        tmp_list.append(j)
-        combi_dict[cc] = '_'.join(tmp_list)
-        cc            += 1
+        for k in jet_lst:
+            for l in ExcLimit:
+        #if True:
+        #    if True:
+                tmp_list = []
+                tmp_list.append(i)
+                tmp_list.append(j)
+                tmp_list.append(k)
+                tmp_list.append(l)
+                combi_dict[cc] = '_'.join(tmp_list)
+                cc            += 1
 
 empty_log = []
 out_dict  = {}
 
-if 1:
+if True:
     for ci in cut_type:
 	out_dict[ci] = {}
 	for key, item in combi_dict.iteritems():
@@ -133,11 +167,13 @@ if 1:
                                             tmp_tpr_l = tmp_tpr
                                             tmp_tpr_h = tmp_tpr       
                                             if_done   = True   
+                                        """
                                         if file_to_look == 'RS_trn_30GeV_500mm_tst_20GeV_5000mm_slct1_attr_full_kin0_v0.pkl':
                                             print 'sgn_eff', sgn_eff  
                                             print 'tmp_tpr_l', tmp_tpr_l
                                             print 'tmp_tpr_h', tmp_tpr_h
                                             print 'tmp_fpr', tmp_fpr
+                                        """
                                         count += 1     
 
                                     delta_fpr_l   = np.abs( tmp_fpr-(fpr_bdt[idx_l]-e_fpr_l[idx_l]) )
@@ -193,12 +229,6 @@ for i in mass_list:
         imDict[i][j]   = 0.
         err_dict[i][j] = 0.
 
-
-#input_string = 'full_kin0'
-#input_string = '2best_kin0'
-input_string = '2best_kin1'
-#input_string = 'full_kin1'
-
 LL = []
 for mmi in mass_list:
     for lli in ctau_list:  
@@ -211,23 +241,24 @@ df_err = pd.DataFrame(err_dict)
 
 if val == 'val':
     df        = df_val
-    val_label = '(1/FPR_BDT)/(1/FPR_cut) at cut TPR'
+    val_label = r'$\frac{ \frac{1}{FPR_{BDT}} }{ \frac{1}{FPR_{cut}} }|TPR_{cut}$'
 elif val == 'err':
     df        = df_err
-    val_label = '(1/FPR_BDT)/(1/FPR_cut) at cut TPR -- errors'
-
+    val_label = r'$\frac{ \frac{1}{FPR_{BDT}} }{ \frac{1}{FPR_{cut}} }|TPR_{cut} (errors)$'
 
 m_L = df.columns.values.tolist()
 c_L = [500,1000,2000,5000]
 
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
 
 fig, ax  = plt.subplots()
 im, cbar = heatmap(df, c_L, m_L, ax=ax, cmap="YlGn", cbarlabel=val_label)
-texts    = annotate_heatmap(im, valfmt="{x:.3f}", fsize=6)
+texts    = annotate_heatmap(im, valfmt="{x:.1f}", fsize=16)#6)
 fig.tight_layout()
 #plt.show()
  
-outName  = 'param_space_map_bdt_vs_'+cut_type[0]+'_trn_'+str(trn_m)+'_'+str(trn_l)+'_'+val 
+outName  = '2Dmap_bdt_vs_'+cut_type[0]+'_trn_'+str(trn_m)+'_'+str(trn_l)+'_'+input_string+'_'+val 
 fig.savefig(pth_out + outName + '.png', bbox_inches='tight')    
 
 

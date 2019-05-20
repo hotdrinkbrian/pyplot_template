@@ -70,9 +70,10 @@ path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/'+v_production+
 #pth_out = path_nn
 pth_out = path + 'heat/'
 
-#VV = 1
-VV = 0
-#VV = '0123'
+
+VV = '0123'
+#VV = 1#0
+#VV = 0
 
 #VV = 4
 #VV = 123
@@ -104,16 +105,13 @@ mass_list    = [20,30,40,50]
 ctau_list    = [500,1000,2000,5000]
 
 cut_type     = ['hard_cut']#['loose_cut']#['hard_cut']#['loose_cut','hard_cut']
-inputs       = ['2best']#['full']#['2best','full']
+inputs       = ['full']#['2best']#['full']#['2best','full']
 kin_var      = ['kin1']#['kin0']#['kin0','kin1']
 
-#jet_lst      = ['jet0']
-jet_lst      = ['jet1']
-#jet_lst      = ['jet01']
-#ExcLimit     = ['ExLim1']
-ExcLimit     = ['ExLim0']
-
-input_string = '_'.join([inputs[0],kin_var[0],jet_lst[0],ExcLimit[0]])
+#input_string = 'full_kin0'
+#input_string = '2best_kin0'
+#input_string = '2best_kin1'
+input_string = 'full_kin1'
 
 
 
@@ -121,17 +119,11 @@ combi_dict   = {}
 cc           = 0
 for i in inputs:
     for j in kin_var:
-        for k in jet_lst:
-            for l in ExcLimit:
-        #if True:
-        #    if True:
-                tmp_list = []
-                tmp_list.append(i)
-                tmp_list.append(j)
-                tmp_list.append(k)
-                tmp_list.append(l)
-                combi_dict[cc] = '_'.join(tmp_list)
-                cc            += 1
+        tmp_list = []
+        tmp_list.append(i)
+        tmp_list.append(j)
+        combi_dict[cc] = '_'.join(tmp_list)
+        cc            += 1
 
 empty_log = []
 out_dict  = {}
@@ -269,8 +261,15 @@ if 1:
                                     fpr_err       = np.maximum(fpr_e_l,fpr_e_h)
                                     """
                                     
+                                    if (m_tst==50) and (l_tst==500):
+                                        print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+                                        print 'cut_tpr: ', sgn_eff
+                                        print 'nn_tpr: ', tmp_tpr_nn
+                                        print 'nn_fpr:', tmp_fpr_nn 
+                                        print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 
 				    if tmp_fpr != 0:
+                                      
                                         print 'TPR:' 
                                         print 'BDT: ', tmp_tpr
                                         print 'NN: ', tmp_tpr_nn  
@@ -350,10 +349,12 @@ texts    = annotate_heatmap(im, valfmt="{x:."+str(decimal_p)+"f}", fsize=16)
 fig.tight_layout()
 #plt.show()
  
-outName  = '2Dmap_'+model+'_vs_'+baseline +'_trn_'+str(trn_m)+'_'+str(trn_l)+'_val_'+str(val_m)+'_'+str(val_l) +'_'+input_string+'_'+val +'_v'+str(VV)
-
+#outName  = 'param_space_map_bdt_vs_'+model +'_trn_'+str(trn_m)+'_'+str(trn_l)+'_val_'+str(val_m)+'_'+str(val_l) +'_'+val 
+"""
+if   baseline == 'bdt':    outName  = 'param_space_map_'+model+'_vs_bdt' +'_trn_'+str(trn_m)+'_'+str(trn_l)+'_val_'+str(val_m)+'_'+str(val_l) +'_'+val +'_v'+str(VV)
+if   baseline == 'cut':    outName  = 'param_space_map_'+model+'_vs_cut' +'_trn_'+str(trn_m)+'_'+str(trn_l)+'_val_'+str(val_m)+'_'+str(val_l) +'_'+val +'_v'+str(VV)
 fig.savefig(pth_out + outName + '.png', bbox_inches='tight')    
-
+"""
 
 
 

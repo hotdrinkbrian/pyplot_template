@@ -5,7 +5,7 @@ cnn = 0#1#0#1
 
 A = 'python '
 B = '/beegfs/desy/user/hezhiyua/git/pyplot_template/readPlot/heat_map/'
-C = 'FPR_vs.py'
+C = 'fpr_test.py'#'FPR_vs.py'
 
 #D = ' --trnm '  + '50'
 #E = ' --trnl '  + '2000'

@@ -1,7 +1,6 @@
 from os import system as act
 from time import sleep as slp
 
-
 A = 'python '
 B = '/beegfs/desy/user/hezhiyua/git/pyplot_template/readPlot/heat_map/'
 C = 'readP.py'
@@ -10,8 +9,11 @@ C = 'readP.py'
 #E = ' --trnl '  + '2000'
 #F  = ' --mode '
 
-mass_list = [20,30,40,50]
-ctau_list = [500,1000,2000,5000]
+#mass_list = [20,30,40,50]
+#ctau_list = [500,1000,2000,5000]
+mass_list = [30]#[20]
+ctau_list = [500]#[1000]
+
 mode_list = ['val']#['val','err']
 
 for mm in mass_list:
@@ -26,5 +28,5 @@ for mm in mass_list:
             act_str = A+B+C+D+E+F
             print act_str
             act(act_str)
-            #slp(1*1)
+            #slp(1)
 
