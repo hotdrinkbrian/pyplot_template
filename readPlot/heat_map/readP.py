@@ -57,12 +57,14 @@ val = mode
 #val = 'val'
 #val = 'err'
 
+n_digits     = '.2f'#'.1f'
+
 mass_list    = [20,30,40,50]
 ctau_list    = [500,1000,2000,5000]
 
 cut_type     = ['hard_cut']#['loose_cut']#['loose_cut','hard_cut']
-inputs       = ['2best']#['full']#['2best','full']
-kin_var      = ['kin1']#['kin0','kin1']
+inputs       = ['1best']#['3best']#['4best']#['2best']#['full']#['1best','2best','3best','4best','full']
+kin_var      = ['kin0']#['kin1']#['kin0','kin1']
 
 #jet_lst      = ['jet0']
 #jet_lst      = ['jet1']
@@ -254,7 +256,7 @@ plt.rc('font', family='serif')
 
 fig, ax  = plt.subplots()
 im, cbar = heatmap(df, c_L, m_L, ax=ax, cmap="YlGn", cbarlabel=val_label)
-texts    = annotate_heatmap(im, valfmt="{x:.1f}", fsize=16)#6)
+texts    = annotate_heatmap(im, valfmt='{x:'+n_digits+'}', fsize=16)#6)
 fig.tight_layout()
 #plt.show()
  

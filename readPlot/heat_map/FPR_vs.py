@@ -104,12 +104,12 @@ mass_list    = [20,30,40,50]
 ctau_list    = [500,1000,2000,5000]
 
 cut_type     = ['hard_cut']#['loose_cut']#['hard_cut']#['loose_cut','hard_cut']
-inputs       = ['2best']#['full']#['2best','full']
-kin_var      = ['kin1']#['kin0']#['kin0','kin1']
+inputs       = ['1best']#['2best']#['full']#['2best','full']
+kin_var      = ['kin0']#['kin1']#['kin0']#['kin0','kin1']
 
 #jet_lst      = ['jet0']
-jet_lst      = ['jet1']
-#jet_lst      = ['jet01']
+#jet_lst      = ['jet1']
+jet_lst      = ['jet01']
 #ExcLimit     = ['ExLim1']
 ExcLimit     = ['ExLim0']
 
@@ -136,7 +136,7 @@ for i in inputs:
 empty_log = []
 out_dict  = {}
 
-if 1:
+if True:
     for ci in cut_type:
 	out_dict[ci] = {}
 	for key, item in combi_dict.iteritems():

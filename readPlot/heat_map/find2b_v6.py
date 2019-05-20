@@ -33,9 +33,13 @@ attr_list = ['nTrackConstituents','nTracks3PixelHits','cHadMulti','nHadMulti','n
 
 #not_there = ['cEmEFrac']
 
+jet_lst   = 'jet01'
+ExcLimit  = 'ExLim0'
 
-score = 'aoc'
-#score = 'fpr'
+best2_str = 'nSelectedTracks_nHadEFrac_'
+
+score     = 'aoc'
+#score     = 'fpr'
 
 def combi_2ofN(lst):
     kL = []
@@ -61,7 +65,7 @@ for i in attr_2combi_list:
 print a_c_list    
 
 counting = 0
-out_dict  = {}
+out_dict = {}
 for a1 in attr_list:
     a1_s = a1[h_n:]
     out_dict[a1_s] = {}
@@ -73,7 +77,10 @@ for a1 in attr_list:
         elif a_c2 in a_c_list:    a_c = a_c2
 
         #file_name = 'RS_trn_30GeV_500mm_tst_30GeV_500mm_slct1_attr_'+a_c+'_kin1_v0.pkl'  
-        file_name = 'RS_trn_'+trn_m+'GeV_'+trn_l+'mm_tst_'+tst_m+'GeV_'+tst_l+'mm_slct1_attr_'+a_c+'_kin'+str(kin_on)+'_v0.pkl'  
+        #file_name = 'RS_trn_'+trn_m+'GeV_'+trn_l+'mm_tst_'+tst_m+'GeV_'+tst_l+'mm_slct1_attr_'+a_c+'_kin'+str(kin_on)+'_v0.pkl'  
+        #file_name = 'RS_trn_'+trn_m+'GeV_'+trn_l+'mm_tst_'+tst_m+'GeV_'+tst_l+'mm_slct1_attr_'+a_c+'_kin'+str(kin_on)+'_'+jet_lst+'_'+ExcLimit+'_v0.pkl'
+        file_name = 'RS_trn_'+trn_m+'GeV_'+trn_l+'mm_tst_'+tst_m+'GeV_'+tst_l+'mm_slct1_attr_'+best2_str+a_c+'_kin'+str(kin_on)+'_'+jet_lst+'_'+ExcLimit+'_v0.pkl'
+
 
         counting += 1 
         print counting
