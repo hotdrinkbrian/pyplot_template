@@ -70,18 +70,6 @@ path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/'+v_production+
 #pth_out = path_nn
 pth_out = path + 'heat/'
 
-#VV = 1
-VV = 0
-#VV = '0123'
-
-#VV = 4
-#VV = 123
-#VV = '123a'
-#VV = '123b'
-#VV = '123c'
-#VV = '01'
-
-
 def read_pkl(pth):
     pkls = joblib.load(pth)
     return pkls['data']
@@ -99,6 +87,11 @@ trn_l = int(trn_l)
 val = mode
 #val = 'val'
 #val = 'err'
+
+#VV = '1'
+#VV = '0'
+VV = '01'
+#VV = '0123'
 
 mass_list    = [20,30,40,50]
 ctau_list    = [500,1000,2000,5000]

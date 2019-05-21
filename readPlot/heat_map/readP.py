@@ -11,8 +11,6 @@ from matplotlib import rc
 rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 rc('text', usetex=True)
 
-
-
 import argparse as agp
 pars = agp.ArgumentParser()
 pars.add_argument('--trnm',action='store',type=str,help='train mass')
@@ -23,17 +21,10 @@ trn_m = args.trnm
 trn_l = args.trnl
 mode  = args.mode
 
-#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/generalization_bdt/rs/'
-#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/'
-#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/test/'
-#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG/'
-#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_new/'
 #path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_post/'
 #path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/DPG_post/'
 path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/v6/'
 
-#pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/par_space_map/'
-#pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD/par_space_map/test/' 
 #pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG/'+'heat/'
 #pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_new/'+'heat/'
 pth_out = path + 'heat/'
@@ -63,8 +54,8 @@ mass_list    = [20,30,40,50]
 ctau_list    = [500,1000,2000,5000]
 
 cut_type     = ['hard_cut']#['loose_cut']#['loose_cut','hard_cut']
-inputs       = ['1best']#['3best']#['4best']#['2best']#['full']#['1best','2best','3best','4best','full']
-kin_var      = ['kin0']#['kin1']#['kin0','kin1']
+inputs       = ['4best']#['1best']#['3best']#['2best']#['full']#['1best','2best','3best','4best','full']
+kin_var      = ['kin1']#['kin0']#['kin1']#['kin0','kin1']
 
 #jet_lst      = ['jet0']
 #jet_lst      = ['jet1']
