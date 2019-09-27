@@ -47,11 +47,17 @@ v_production = 'v6'
 #tv_str = 'trn50_500val30_2000/'#'trn30_500val50_1000/'
 #tv_str  = 'trn'+str(trn_m)+'_'+str(trn_l)+'val'+'30_2000'+'/'
 
-tv_str  = 'trn'+str(trn_m)+'_'+str(trn_l)+'val'+'40_1000'+'/'
+if not trn_m == 'cb':
+    tv_str  = 'trn'+str(trn_m)+'_'+str(trn_l)+'val'+'40_1000'+'/'
+else:
+    tv_str  = 'trn'+'_combined_'+'val'+'_combined_'+'/'  
+
+PTH = '/beegfs/desy/user/hezhiyua/2bBacked/skimmed/LLP/allInOne/nn_format/'+str(n_jets)+'jets/'+v_production+'/'
 
 #nn_pth  = '/beegfs/desy/user/hezhiyua/2bBacked/skimmed/LLP/all_in_1/nn_format/2jets/DPG/lola/Results/'+tv_str
 #nn_pth  = '/beegfs/desy/user/hezhiyua/2bBacked/skimmed/LLP/allInOne/nn_format/2jets/DPG/lola/Results/'+tv_str
-nn_pth  = '/beegfs/desy/user/hezhiyua/2bBacked/skimmed/LLP/allInOne/nn_format/'+str(n_jets)+'jets/'+v_production+'/lola/Results/'+tv_str
+#nn_pth  = '/beegfs/desy/user/hezhiyua/2bBacked/skimmed/LLP/allInOne/nn_format/'+str(n_jets)+'jets/'+v_production+'/lola/Results/'+tv_str
+nn_pth  = PTH+'/lola/Results/'+tv_str
 
 path_nn = nn_pth
 
@@ -64,7 +70,8 @@ path_nn = nn_pth
 #path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_new/'
 #path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_post/'
 #path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/DPG_post/'
-path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/'+v_production+'/'
+#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/'+v_production+'/'
+path    = PTH+'bdt/'
 
 #pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/train_on_selected_QCD_bug/auc_map/'
 #pth_out = path_nn
@@ -81,8 +88,9 @@ def find_nearest(array, value):
 
 #trn_m = 40
 #trn_l = 5000
-trn_m = int(trn_m)
-trn_l = int(trn_l)
+if not trn_m == 'cb':
+    trn_m = int(trn_m)
+    trn_l = int(trn_l)
 
 val = mode
 #val = 'val'
@@ -97,8 +105,8 @@ mass_list    = [20,30,40,50]
 ctau_list    = [500,1000,2000,5000]
 
 cut_type     = ['hard_cut']#['loose_cut']#['hard_cut']#['loose_cut','hard_cut']
-inputs       = ['1best']#['2best']#['full']#['2best','full']
-kin_var      = ['kin0']#['kin1']#['kin0']#['kin0','kin1']
+inputs       = ['6best']#['2best']#['full']#['2best','full']
+kin_var      = ['kin1']#['kin1']#['kin0']#['kin0','kin1']
 
 #jet_lst      = ['jet0']
 #jet_lst      = ['jet1']

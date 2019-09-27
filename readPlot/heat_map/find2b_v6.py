@@ -1,42 +1,58 @@
-from sklearn.externals import joblib
+#import keras
+from keras.layers import Dense
+
+from   sklearn.externals import joblib
+import matplotlib
+matplotlib.use('Agg') #prevent the plot from showing
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from hm import *
+from   hm import *
 
-#test_self = 1
-h_n = 0#2
 
-val = 'val'
-#val = 'err'
+h_n       = 0#2
+val       = 'val'
+#val       = 'err'
+#path      = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/v6/'#+'find2best/'
+path      = '/beegfs/desy/user/hezhiyua/2bBacked/skimmed/LLP/allInOne/nn_format/4jets/v6/bdt/'#+'kinTrue/'
 
-#path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG/'
-#path = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_new/'+'find2best/'
-path     = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/v6/'#+'find2best/'
+#path      = '/beegfs/desy/user/hezhiyua/2bBacked/skimmed/LLP/allInOne/nn_format/4jets/v6/fcn/'#+'kinTrue/'
 
-pth_out  = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/v6/'+'find2best/'
-out_name = '2best.png'
+#pth_out   = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/v6/'+'find2best/'
+pth_out   = path+'f2b/'
+out_name  = '2best.png'
 
-trn_m    = '30'
-trn_l    = '500'
-tst_m    = '30'#'40'
-tst_l    = '1000'#'2000'
+trn_m     = '30'
+trn_l     = '500'
+tst_m     = '30'
+tst_l     = '500'
 
-kin_on   = 1#0#1
 
-#attr_list = ['J1cHadEFrac','J1nHadEFrac','J1nEmEFrac','J1cEmEFrac','J1cmuEFrac','J1muEFrac','J1eleEFrac','J1eleMulti','J1photonEFrac','J1photonMulti','J1cHadMulti','J1nHadMulti','J1npr','J1cMulti','J1nMulti','J1nSelectedTracks','J1ecalE']
-#attr_list = ['J1cHadEFrac','J1nHadEFrac','J1nEmEFrac','J1cEmEFrac','J1cHadMulti','J1nHadMulti','J1npr','J1cMulti','J1nMulti','J1ecalE']
-#attr_list = ['cHadEFrac','nHadEFrac','nEmEFrac','cHadMulti','nHadMulti','npr','cMulti','ecalE','photonEFrac']#,'nSelectedTracks'] 
+trn_m     = '20'
+trn_l     = '5000'
+tst_m     = trn_m
+tst_l     = trn_l
 
-attr_list = ['nTrackConstituents','nTracks3PixelHits','cHadMulti','nHadMulti','npr','nSelectedTracks','cMulti','nEmEFrac','ecalE','photonEFrac','nHadEFrac','cHadEFrac']
+
+
+kin_on    = 1#0#1
+
+attr_list = ['nTrackConstituents','nTracks3PixelHits','cHadMulti','nHadMulti','npr','nSelectedTracks','cMulti','nEmEFrac','ecalE','photonEFrac','nHadEFrac','cHadEFrac']+['nTracks1PixelHits','nTracks2PixelHits']#+['nTracks0PixelHits']
 #attr_list = ['mass','pt','energy']
-
 #not_there = ['cEmEFrac']
+#attr_list = ['nEmEFrac','ecalE']
+#attr_list = ['nTracks3PixelHits','nSelectedTracks','nHadEFrac','cHadEFrac']
+#attr_list = ['nTrackConstituents','nTracks3PixelHits','cHadMulti','nHadMulti','npr','cMulti','ecalE','photonEFrac','nHadEFrac']+['nTracks1PixelHits','nTracks2PixelHits']#+['nTracks0PixelHits']
+#attr_list = ['photonEFrac']
 
-jet_lst   = 'jet01'
+jet_lst   = 'jet0'#'jet01'
+#jet_lst   = 'jet1'
+
 ExcLimit  = 'ExLim0'
+perJet    = 'perJetTrue'
 
-best2_str = 'nSelectedTracks_nHadEFrac_'
+best2_str = 'nSelectedTracks_cHadEFrac_'#'nSelectedTracks_nHadEFrac_'
+#best2_str = ''
 
 score     = 'aoc'
 #score     = 'fpr'
@@ -79,7 +95,7 @@ for a1 in attr_list:
         #file_name = 'RS_trn_30GeV_500mm_tst_30GeV_500mm_slct1_attr_'+a_c+'_kin1_v0.pkl'  
         #file_name = 'RS_trn_'+trn_m+'GeV_'+trn_l+'mm_tst_'+tst_m+'GeV_'+tst_l+'mm_slct1_attr_'+a_c+'_kin'+str(kin_on)+'_v0.pkl'  
         #file_name = 'RS_trn_'+trn_m+'GeV_'+trn_l+'mm_tst_'+tst_m+'GeV_'+tst_l+'mm_slct1_attr_'+a_c+'_kin'+str(kin_on)+'_'+jet_lst+'_'+ExcLimit+'_v0.pkl'
-        file_name = 'RS_trn_'+trn_m+'GeV_'+trn_l+'mm_tst_'+tst_m+'GeV_'+tst_l+'mm_slct1_attr_'+best2_str+a_c+'_kin'+str(kin_on)+'_'+jet_lst+'_'+ExcLimit+'_v0.pkl'
+        file_name = 'RS_trn_'+trn_m+'GeV_'+trn_l+'mm_tst_'+tst_m+'GeV_'+tst_l+'mm_slct1_attr_'+best2_str+a_c+'_kin'+str(kin_on)+'_'+jet_lst+'_'+ExcLimit+'_'+perJet+'_v0.pkl'
 
 
         counting += 1 
@@ -87,16 +103,19 @@ for a1 in attr_list:
         print file_name
         in_dict   = read_pkl(path+file_name)
         
+        """
         roc_dict = in_dict['roc']
+        
         fpr_bdt  = roc_dict['fpr']
         tpr_bdt  = roc_dict['tpr']
         #e_tpr_l  = roc_dict['e_tpr_l']
         e_fpr_l  = roc_dict['e_fpr_l']
         #e_tpr_h  = roc_dict['e_tpr_h']
         e_fpr_h  = roc_dict['e_fpr_h']
-     
+        """
         aoc      = in_dict['aoc']
-   
+        #aoc      = in_dict['roc']   
+
         """ 
         cut_dict = in_dict['cut_based']
         dicti    = cut_dict['hard_cut']
@@ -171,8 +190,6 @@ for a1 in attr_list:
 
         out_dict[a1_s][a2_s]['aoc'] = aoc 
 
-#print out_dict
-
 
 
 
@@ -207,7 +224,7 @@ print df_val
 if val == 'val':
     df        = df_val
     if score == 'aoc': 
-        val_label = 'AUC'#'AOC'
+        val_label = 'AUC'
     elif score == 'fpr':
         val_label = '(1/FPR_BDT)/(1/FPR_cut) at cut TPR'
 elif val == 'err':
@@ -223,12 +240,12 @@ attr_L = df.columns.values.tolist()
 
 fig, ax  = plt.subplots()
 im, cbar = heatmap(df, attr_L, attr_L, ax=ax, cmap="YlGn", cbarlabel=val_label)
-texts    = annotate_heatmap(im, valfmt='{x:.2f}', fsize=8) # valfmt="{x:.3f} t"
+texts    = annotate_heatmap(im, valfmt='{x:.2f}', fsize=7) # valfmt="{x:.3f} t" #fsize=8
 fig.tight_layout()
 #plt.show()
 
-fig.savefig(pth_out+out_name, bbox_inches='tight')
-plt.show()
+fig.savefig(pth_out+out_name, bbox_inches='tight', dpi=200)
+#plt.show()
 
 
 

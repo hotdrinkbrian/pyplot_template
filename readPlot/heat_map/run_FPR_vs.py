@@ -30,6 +30,8 @@ elif cnn == 0:
     ctau_list = [500,1000,2000,5000]
     mass_list = [30]#[20]#[40]
     ctau_list = [500]#[500]#[2000]
+    mass_list = ['cb']
+    ctau_list = ['cb']
 
 mode_list = ['val']#['val','err']
 

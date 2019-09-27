@@ -21,15 +21,12 @@ trn_m = args.trnm
 trn_l = args.trnl
 mode  = args.mode
 
-#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_post/'
-#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/DPG_post/'
-#path    = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Lisa/v6/'
-path    = '/beegfs/desy/user/hezhiyua/2bBacked/skimmed/LLP/allInOne/nn_format/4jets/v6/bdt/'
+path  = '/beegfs/desy/user/hezhiyua/2bBacked/skimmed/LLP/allInOne/nn_format/4jets/v6/bdt/'
+path  = path+'out/' 
+path  = '/beegfs/desy/user/hezhiyua/MA/TST_phspace/cnn/'
+path  = path+'out/'
 
-#pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG/'+'heat/'
-#pth_out = '/beegfs/desy/user/hezhiyua/LLP/bdt_output/result/Brian/DPG_new/'+'heat/'
 pth_out = path + 'heat/'
-
 
 def read_pkl(pth):
     pkls = joblib.load(pth)
@@ -56,24 +53,23 @@ mass_list    = [20,30,40,50]
 ctau_list    = [500,1000,2000,5000]
 
 cut_type     = ['hard_cut']#['loose_cut']#['loose_cut','hard_cut']
-inputs       = ['6best']#['4best']#['1best']#['3best']#['2best']#['full']#['1best','2best','3best','4best','full']
+inputs       = ['2best']#['4best']#['1best']#['3best']#['2best']#['full']#['1best','2best','3best','4best','full']
+#inputs       = ['4best']
+inputs       = ['6best']
+#inputs       = ['full']
+
+
 kin_var      = ['kin1']#['kin0']#['kin1']#['kin0','kin1']
 
-#jet_lst      = ['jet0']
+jet_lst      = ['jet0']
 #jet_lst      = ['jet1']
-jet_lst      = ['jet01']
+#jet_lst      = ['jet01']
 #ExcLimit     = ['ExLim1']
 ExcLimit     = ['ExLim0']
 
 input_string = '_'.join([inputs[0],kin_var[0],jet_lst[0],ExcLimit[0]])
-#input_string = '2best_kin1'
-#input_string = '2best_kin0'
-#input_string = 'full_kin0'
 #input_string = 'full_kin1'
 
-#inputs       = ['full']
-#kin_var      = ['kin0']
-#input_string = 'full_kin0'
 
 
 combi_dict   = {}
@@ -110,7 +106,21 @@ if True:
 			    out_dict[ci][item][m_trn][l_trn][m_tst][l_tst] = {}
 			    trn_part = str(m_trn)+'GeV_'+str(l_trn)+'mm_'
 			    tst_part = 'tst'+'_'+str(m_tst)+'GeV_'+str(l_tst)
-			    file_to_look = 'RS_'+'trn'+'_'+trn_part+tst_part+'mm_slct1_attr_'+item+'_v0.pkl'
+                            trn_part = str(m_trn)+'_'+str(l_trn)+'mm_'
+			    #file_to_look = 'RS_'+'trn'+'_'+trn_part+tst_part+'mm_slct1_attr_'+item+'_v0.pkl'
+                            file_to_look = 'bdt_trn_'+trn_part+tst_part+'mm_slct1_attr_'+item+'_perJetTrue_v0.pkl'
+
+                            file_to_look = 'cnn_4jets_v6_lola_train30_500val30_500test30_500_2d_E_pT_EPH1_GE_cnn_0MAtrn_'+trn_part+tst_part+'mm_jet0_ExLim0_perJetTrue_v0.pkl' 
+
+
+                            trn_part     = '30_500mm_'
+                            file_to_look = 'cnn_4jets_v6_lola_train30_500val30_500test30_500_2d_E_pT_EPH1_GE_cnn_0MAtrn_'+trn_part+tst_part+'mm_jet0_ExLim0_perJetTrue_v0.pkl' 
+
+                            #'cnn_4jets_v6_lola_train30_500val30_500test30_500_2d_E_pT_EPH1_GE_cnn_0MAtrn_train_combined_val_combined_testmm_tst_20GeV_1000mm_jet0_ExLim0_perJetTrue_v0.pkl'
+                            trn_part     = 'train_combined_val_combined_testmm_'
+                            file_to_look = 'cnn_4jets_v6_lola_train30_500val30_500test30_500_2d_E_pT_EPH1_GE_cnn_0MAtrn_'+trn_part+tst_part+'mm_jet0_ExLim0_perJetTrue_v0.pkl' 
+
+
 			    print file_to_look
 			    path_tot     = path + file_to_look
 			    in_dict      = read_pkl(path_tot)
@@ -248,6 +258,42 @@ plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 
 fig, ax  = plt.subplots()
+
+#mm_x = 
+#mm_y = 
+
+from matplotlib import rc
+rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+## for Palatino and other serif fonts use:
+#rc('font',**{'family':'serif','serif':['Palatino']})
+rc('text', usetex=True)
+
+ax.annotate(r"c$\tau$ (mm)",
+            xy=(1, 1),  # theta, radius
+            xytext=(0.01, 0.01),    # fraction, fraction
+            textcoords='figure fraction',
+            #arrowprops=dict(facecolor='black', shrink=0.05),
+            horizontalalignment='left',
+            verticalalignment='bottom',
+            )
+
+ax.annotate('', xy=(-0.12, 0.01), xycoords='axes fraction', xytext=(-0.12, 0.3), 
+            arrowprops=dict(arrowstyle="->", color='grey'))
+
+ax.annotate('', xy=(0.99, 1.08), xycoords='axes fraction', xytext=(0.7, 1.08), 
+            arrowprops=dict(arrowstyle="->", color='grey'))
+
+
+ax.annotate('mass (GeV)',
+            xy=(1, 1),  # theta, radius
+            xytext=(0.82, 0.95),    # fraction, fraction
+            textcoords='figure fraction',
+            #arrowprops=dict(facecolor='black', shrink=0.05),
+            horizontalalignment='left',
+            verticalalignment='bottom',
+            )
+
+
 im, cbar = heatmap(df, c_L, m_L, ax=ax, cmap="YlGn", cbarlabel=val_label)
 texts    = annotate_heatmap(im, valfmt='{x:'+n_digits+'}', fsize=16)#6)
 fig.tight_layout()

@@ -104,9 +104,9 @@ if 1:
                                 phsp_str = str(m_tst)+'_'+str(l_tst)
                                 auc_nn   = nn_dic[phsp_str]
 
-				out_dict[item][m_trn][l_trn][m_tst][l_tst]['auc'] = auc_nn / float(auc_bdt) 
+				#out_dict[item][m_trn][l_trn][m_tst][l_tst]['auc'] = auc_nn / float(auc_bdt) 
 			        #out_dict[item][m_trn][l_trn][m_tst][l_tst]['auc'] = auc_nn
-                                #out_dict[item][m_trn][l_trn][m_tst][l_tst]['auc'] = auc_bdt
+                                out_dict[item][m_trn][l_trn][m_tst][l_tst]['auc'] = auc_bdt
 			 
 
     #print out_dict
